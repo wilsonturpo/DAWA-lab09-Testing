@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 function App() {
 
-  const [data, setData] = useState([{}])
+  const [contacts, setContacts] = useState([{}])
 
   const [contact, setContact] = useState({
     name:'',
@@ -14,13 +14,14 @@ function App() {
   })
 
   useEffect(() => {
-   fetchData()
+    fetchContacts()
   }, []);
 
-  const fetchData = async ()=>{
+  const fetchContacts = async ()=>{
     try{
-      const contacts = await api.agenda.list();
-      setData(contacts.data)
+      const contactsList = await api.agenda.list();
+      setContacts(contactsList.data)
+      console.log(contactsList.data)
     }catch(error){
       console.log(error)
     }
@@ -39,7 +40,7 @@ function App() {
     try{
         console.log(contact)
         await api.agenda.create(contact);
-        fetchData()
+        fetchContacts()
     }catch (error){
         console.log(error)
     }
@@ -59,7 +60,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-          {data.map((person, index) => (
+          {contacts.map((person, index) => (
             <p key={index} >Hello, {person.name}!</p>
           ))}
 

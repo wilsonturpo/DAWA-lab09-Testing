@@ -8,6 +8,7 @@ const morgan = require('morgan')
 import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import cors from 'cors'
 
 /*
 const errorHandler = require('./utils/middlewares/errorHandlers')
@@ -29,6 +30,7 @@ app.use(morgan('common'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(helmet())
+app.use(cors())
 //  app.use(bodyParser())
 
 app.use('/', phoneApi)

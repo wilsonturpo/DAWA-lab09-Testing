@@ -39,8 +39,9 @@ function App() {
     e.preventDefault();
     try{
         console.log(contact)
-        await api.agenda.create(contact);
-        fetchContacts()
+        let newContact = await api.agenda.create(contact);
+        //fetchContacts()
+        setContacts([...contacts,newContact.data])
     }catch (error){
         console.log(error)
     }
@@ -49,47 +50,50 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-          {contacts.map((person, index) => (
-            <p key={index} >Hello, {person.name}!</p>
-          ))}
-
-        </a>
+        Phonebook
       </header>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-            <label>Name</label>
+      <div className="App-container">
+        <div className="column">
+          <table className="flat-table flat-table-1">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map((contact, index) => (
+                <tr key={index}>
+                  <td>{contact.name}</td>
+                  <td>{contact.number}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="column">
+          <form className="App-form" onSubmit={handleSubmit}>
             <input 
                 onChange={handleChange} 
                 className="form-control" 
+                placeholder="Name Contact"
                 type="text" 
                 name="name"
                 value={contact.name} 
             />
-        </div>
-
-        <div className="form-group">
-            <label>Number</label>
             <input 
                 onChange={handleChange} 
                 className="form-control"
+                placeholder="Phone Number"
                 type="text" 
                 name="number" 
                 value={contact.number} 
             />
+            <button className="btn-Submit" type="submit" >Crear contacto</button>
+          </form>
         </div>
-        <button className="btn btn-primary" type="submit" >Crear contacto</button>
-      </form>
+          
+      </div>
       
     </div>
   );

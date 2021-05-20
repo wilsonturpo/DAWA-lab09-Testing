@@ -41,7 +41,8 @@ const api = {
       return callApi(`/api/persons/${contactId}`);
     },
     update(contactId, updates) {
-      return callApi(`/api/persons/${contactId}`, {
+      updates = {...updates, "id": contactId}
+      return callApi(`/api/persons`, {
         method: 'PUT',
         body: JSON.stringify(updates),
       });

@@ -17,7 +17,7 @@ const FormContact = ({contact, handleSubmit, handleCancel, btnSend, handleChange
               name="number" 
               value={contact.number} 
           />
-          <button className="btn-Submit" type="submit" >{btnSend}</button>
+          <button id="agregar" className="btn-Submit" type="submit" >{btnSend}</button>
           {
             idContact !== 0 ? <button className="btn-Cancel" onClick={handleCancel}>Cancelar</button>: ''
           }

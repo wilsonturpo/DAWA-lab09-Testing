@@ -2,11 +2,15 @@ import logo from './logo.svg';
 import api from './api'
 import './App.css';
 import { useState, useEffect } from 'react';
+import Contact from './components/Contact';
+import FormContact from './components/FormContact';
 
 
 function App() {
 
   const [contacts, setContacts] = useState([{}])
+  const [idContact, setIdContact] = useState(0)
+  const [btnSend, setBtnSend] = useState("Crear contacto")
 
   const [contact, setContact] = useState({
     name:'',
@@ -34,17 +38,68 @@ function App() {
         [e.target.name]: e.target.value,
       })
   };
-
-  const handleSubmit = async e =>{
-    e.preventDefault();
+  const handleEditar = async contact =>{
+    setContact({
+      name: contact.name,
+      number: contact.number
+    })
+    setIdContact(contact._id)
+    setBtnSend("Editar contacto")
+    /* 
     try{
-        console.log(contact)
-        let newContact = await api.agenda.create(contact);
-        //fetchContacts()
-        setContacts([...contacts,newContact.data])
+      let contactEdit = await api.agenda.read(id);
+      //fetchContacts()
+      setContact({
+        name: contactEdit.data.name,
+        number: contactEdit.data.number
+      })
+      
+    }catch (error){
+      console.log(error)
+    }
+    */
+  };
+  const handleEliminar = async id =>{
+    try{
+        await api.agenda.remove(id);
+        fetchContacts()
     }catch (error){
         console.log(error)
     }
+  };
+
+  const handleSubmit = async e =>{
+    e.preventDefault();
+    if (idContact !== 0) {
+      // Editar
+      try{
+        let n = await api.agenda.update(idContact, contact);
+        console.log(n)
+        fetchContacts()
+        handleCancel()
+      }catch (error){
+          console.log(error)
+      }
+    }else{
+      // Crear
+      try{
+          await api.agenda.create(contact);
+          fetchContacts()
+          handleCancel()
+      }catch (error){
+          console.log(error)
+      }
+
+    }
+  }
+
+  const handleCancel = () => {
+    setIdContact(0)
+    setBtnSend("Crear contacto")
+    setContact({
+      name:'',
+      number:''
+    })
   }
 
   return (
@@ -59,38 +114,24 @@ function App() {
               <tr>
                 <th>Name</th>
                 <th>Phone Number</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {contacts.map((contact, index) => (
-                <tr key={index}>
-                  <td>{contact.name}</td>
-                  <td>{contact.number}</td>
-                </tr>
+                <Contact key={index} contact={contact} handleEditar={handleEditar} handleEliminar={handleEliminar}/>
               ))}
             </tbody>
           </table>
         </div>
         <div className="column">
-          <form className="App-form" onSubmit={handleSubmit}>
-            <input 
-                onChange={handleChange} 
-                className="form-control" 
-                placeholder="Name Contact"
-                type="text" 
-                name="name"
-                value={contact.name} 
-            />
-            <input 
-                onChange={handleChange} 
-                className="form-control"
-                placeholder="Phone Number"
-                type="text" 
-                name="number" 
-                value={contact.number} 
-            />
-            <button className="btn-Submit" type="submit" >Crear contacto</button>
-          </form>
+          <FormContact contact={contact}
+            handleSubmit={handleSubmit}
+            handleCancel={handleCancel}
+            btnSend={btnSend}
+            handleChange={handleChange}
+            idContact={idContact}
+          />
         </div>
           
       </div>

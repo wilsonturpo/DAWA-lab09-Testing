@@ -103,14 +103,44 @@
   outline: 0;
 }
 
+.btn{
+  font-size: 1em;
+  width: 150PX;
+  align-self: center;
+  margin: 5px;
+  border-radius: 5px;
+  border-color: transparent;
+}
+
 .btn-Submit{
-  background-color: darkorange;
+  background-color: rgb(18, 168, 68);
   height: 50px;
   width: 250PX;
   border-radius: 5px;
   border-color: transparent;
-  font-size: 1.3em;
+  font-size: 1.2em;
   color: white;
   margin-top: 20px;
   align-self:center;
 }
+
+.btn-Cancel{
+  background-color: rgb(194, 31, 26);
+  height: 50px;
+  width: 250PX;
+  border-radius: 5px;
+  border-color: transparent;
+  font-size: 1.2em;
+  color: white;
+  margin-top: 20px;
+  align-self:center;
+}
+
+.btn-Editar{
+  background-color: rgb(134, 207, 255);
+}
+
+.btn-Eliminar{
+  background-color: rgb(216, 252, 132);
+}
+
